@@ -19,6 +19,8 @@ namespace
 
 int main()
 {
+    setlocale(LC_CTYPE,"");
+
     std::string keepPlaying{};
     do
     {
@@ -53,15 +55,15 @@ int main()
             auto const actualColumns = row == rows - 1 ? numberOfDigits - (rows - 1) * columns : columns;
             std::cout << "   ";
             for (auto column = 0; column < actualColumns; column++)
-                std::cout << static_cast<char>(218) << static_cast<char>(196) << static_cast<char>(191);
+                std::cout << "\u256d\u2500\u256e";
             std::cout << std::endl;
             std::cout << std::right << std::setw(2) << row + 1 << ' ';
             for (auto column = 0; column < actualColumns; column++)
-                std::cout << static_cast<char>(179) << '?' << static_cast<char>(179);
+                std::cout << "\u2502" << '?' << "\u2502";
             std::cout << std::endl;
             std::cout << "   ";
             for (auto column = 0; column < actualColumns; column++)
-                std::cout << static_cast<char>(192) << static_cast<char>(196) << static_cast<char>(217);
+                std::cout << "\u2570\u2500\u256f";
             std::cout << std::endl;
         }
         std::cout << std::endl;
@@ -94,27 +96,27 @@ int main()
             auto const actualColumns = row == rows - 1 ? numberOfDigits - (rows - 1) * columns : columns;
             std::cout << "   ";
             for (auto column = 0; column < actualColumns; column++)
-                std::cout << static_cast<char>(218) << static_cast<char>(196) << static_cast<char>(191);
+                std::cout << "\u256d\u2500\u256e";
             std::cout << std::endl;
             std::cout << std::right << std::setw(2) << row + 1 << ' ';
             for (auto column = 0; column < actualColumns; column++)
             {
                 if (std::find(turnedDigits.cbegin(), turnedDigits.cend(), std::pair{row, column}) != turnedDigits.end())
-                    std::cout << static_cast<char>(179) << digits[row * actualColumns + column] << static_cast<char>(179);
+                    std::cout << "\u2502" << digits[row * actualColumns + column] << "\u2502";
                 else
-                    std::cout << static_cast<char>(179) << " " << static_cast<char>(179);
+                    std::cout << "\u2502" << ' ' << "\u2502";
             }
             std::cout << std::endl;
             std::cout << "   ";
             for (auto column = 0; column < actualColumns; column++)
-                std::cout << static_cast<char>(192) << static_cast<char>(196) << static_cast<char>(217);
+                std::cout << "\u2570\u2500\u256f";
             std::cout << std::endl;
         }
         std::cout << std::endl;
 
         std::cout << "Care este cel mai mare numar ce se poate forma din cele " << numberOfDigitsToTurn << " cifre? ";
 
-        int64_t playerLargestNumber{};
+        std::string playerLargestNumber{};
         std::cin >> playerLargestNumber;
 
         std::vector<int> selectedDigits{};
@@ -123,15 +125,15 @@ int main()
             selectedDigits.emplace_back(digits[row * columns + column]);
         std::sort(selectedDigits.begin(), selectedDigits.end(), std::greater<>());
 
-        int64_t largestNumber{0};
+        std::string largestNumberAsString;
         for (auto const d : selectedDigits)
-            largestNumber = largestNumber * 10 + d;
+            largestNumberAsString += static_cast<char>(d + '0');
 
         std::cout << std::endl;
-        if (playerLargestNumber == largestNumber)
+        if (playerLargestNumber == largestNumberAsString)
             std::cout << "Felicitari, asa mi-a dat si mie :)." << std::endl;
         else
-            std::cout << "Imi pare rau, dar ai gresit. Mie mi-a dat " << largestNumber << '.' << std::endl;
+            std::cout << "Imi pare rau, dar ai gresit. Mie mi-a dat " << largestNumberAsString << '.' << std::endl;
 
         std::cout << std::endl;
 
